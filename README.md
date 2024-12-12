@@ -1,6 +1,13 @@
 # Android Game Hacking Guide
 
-### Tools used
+### ⚠️ Note
+This guide is intended solely for educational purposes to help users understand the inner workings of Android applications and improve their skills in reverse engineering. It is not intended to be used for any malicious or illegal activities. The information provided is for learning and research only.
+
+If you are the owner of an application or the GitHub repository associated with any content in this guide and have concerns, please feel free to contact me.
+
+I do not take responsibility for any actions taken using this guide. Users are solely responsible for how they apply the information shared here. Please ensure that you are following all applicable laws and ethical guidelines when engaging in reverse engineering activities.
+
+### 🛠️ Tools used
 - Ubuntu OS
 - WayDroid (android emulator)
 - Ghidra (for reversing .so files)
