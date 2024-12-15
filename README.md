@@ -73,6 +73,7 @@ Download Frida for Android
 
 ## Some Frida useful commands
 View running processes <br> 
+    ```frida-ps -Ua```
     ```frida-ps -U```
 
 Connect to the process with a JavaScript file <br>
@@ -94,7 +95,7 @@ Run the launcher with bash
     grep -r "coin" 
     change required .smali code
 #### Recompile the APK  
-    java -jar apktool_2.10.0.jar b output -o compiled.apk  
+    java -jar apktool_2.10.0.jar b output -o compiled.apk 
 #### Align the APK (necessary to avoid an error)  
     zipalign -v 4 compiled.apk aligned.apk  
 #### Generate a key (only the first time)  
@@ -103,7 +104,9 @@ Run the launcher with bash
     apksigner sign --ks my-release-key.jks --out signed.apk aligned.apk  
     apksigner verify signed.apk  
 #### Install on the device  
-    adb install signed.apk  
+    adb install signed.apk 
+#### Install bundle on the device
+    adb install-multiple *.apks
 
 
 
@@ -117,4 +120,6 @@ Run the launcher with bash
     error: Ghidra does not recognize Java  
     Solution: sudo apt install openjdk-21-jdk  
 
+    error: /res/values-v34/colors.xml:14: error: resource android:color/bright_foreground_dark is private.
+    solution: navigate to the respective file, and replace @android with @*android
 
