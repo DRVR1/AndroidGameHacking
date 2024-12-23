@@ -49,8 +49,8 @@ Here are the steps for installing an android virtual machine for linux (using wa
     adb connect <IP>:5555
     echo "example: adb connect 192.168.240.112:5555"
 #### Uninstall Waydroid  
-    sudo waydroid session stop 
-    sudo waydroid container stop 
+    waydroid session stop 
+    waydroid container stop 
     sudo apt remove --purge waydroid
     sudo apt autoremove --purge
     sudo rm -rf /var/lib/waydroid
@@ -72,19 +72,58 @@ Here are the steps for installing an android virtual machine for linux (using wa
     
 After executing the python script, you will find some options. Select the corresponding android version, then install libhoudini (for compatibility with other apks) and magisk (to gain root access). When magisk is installed, open it in Waydroid, go to the "Superuser" tab, and enable the shell.
 
-## Setting Up Frida (Requires root)
+## Setting Up Frida (using app) (Requires root)
     pip install frida-tools 
 Download Frida for Android 
     https://apkpure.com/frida-server/me.shingle.fridaserver/downloading <br>
     Open the app, grant root access, and activate the service. 
 
+## Setting Up Frida (inyecting gadget) (no root) (injecting.so method)
+more info: https://koz.io/using-frida-on-android-without-root/<br> 
+more info: https://fadeevab.com/frida-gadget-injection-on-android-no-root-2-methods/<br> 
+
+    pip install frida-tools  
+    pip install lief
+- download frida gadget for android from github releases (must match architecture)<br> 
+- download the inyector.py (uses lief) <br> 
+- decompile the target apk, and search for .so libraries in lib/ or find lib/ in bundled apks <br> 
+example: target/lib/arm64-v8a/libfromapk.so <br> 
+- Copy the /AndroidGameHacking/Hacking_Tools/Frida Scripts/gadget_inyector.py to the lib folder where .so files are located <br>
+- copy the frida gadget.so to the same folder of libfromapk.so, also bring the inyector.py script and replace the names in the script, then inyect. <br>  Now libfromapk.so calls gadget.so. <br> 
+- recompile, allign, sign the apk and install <br> 
+- open the app (it will freeze until frida connects to it), and connect to it using:<br> 
+
+    `frida -l 10.js -U Gadget` <br>
+    `frida-trace -U Gadget`
+
+- This was the .so injection method, there is another one that consist in modifying smali code in order to execute the frida.so file
+
+### Extra: embed js files in a frida gadget (so it runs independently)
+- Create a config file with the format: lib[name].config.so <br>
+Example, if your frida gadget is called libfrida64.so then the config file would be libfrida64.config.so and the name is frida64. <br> Note that files that don't end with ".so" won't be copied to the apk.
+
+- Config file content example:
+```json
+{
+    "interaction": {
+        "type": "script",
+        "path": "/data/local/tmp/myScript.js"
+    }
+}
+```
+- The last thing is pushing the "myScript.js" file to the target device, so frida gadget could find it.
+
 ## Some Frida useful commands
 View running processes <br> 
-    ```frida-ps -Ua```
+    ```frida-ps -Ua```<br> 
     ```frida-ps -U```
 
 Connect to the process with a JavaScript file <br>
     ```frida -U -p <PID> -l <filename>.js```
+
+Or launch the procces with a JavasCript file <br>
+    ```frida -U -l scriptName.js -f com.company.appName```
+
 
 ## Setting Up Ghidra
 Download it from the NSA GitHub <br>
