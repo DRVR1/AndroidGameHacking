@@ -1,3 +1,6 @@
+# Author: Ian Vidmar
+# Description: Inyect a frida-gadget entry into a native lib. 
+
 # Configure:
 native_lib_name = 'libgdx.so'
 frida_gadget_name = 'libfarm64.so'
